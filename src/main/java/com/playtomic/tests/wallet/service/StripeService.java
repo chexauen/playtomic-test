@@ -2,7 +2,9 @@ package com.playtomic.tests.wallet.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
@@ -22,23 +24,20 @@ import java.net.URI;
 public class StripeService {
 
     @NonNull
-    private URI chargesUri;
+    private final URI chargesUri;
 
     @NonNull
-    private URI refundsUri;
+    private final URI refundsUri;
 
     @NonNull
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     public StripeService(@Value("${stripe.simulator.charges-uri}") @NonNull URI chargesUri,
                          @Value("${stripe.simulator.refunds-uri}") @NonNull URI refundsUri,
-                         @NonNull RestTemplateBuilder restTemplateBuilder) {
+                         @NonNull @Autowired RestTemplate restTemplate) {
         this.chargesUri = chargesUri;
         this.refundsUri = refundsUri;
-        this.restTemplate =
-                restTemplateBuilder
-                .errorHandler(new StripeRestTemplateResponseErrorHandler())
-                .build();
+        this.restTemplate = restTemplate;
     }
 
     /**
@@ -49,7 +48,7 @@ public class StripeService {
      * @param creditCardNumber The number of the credit card
      * @param amount The amount that will be charged.
      *
-     * @throws StripeServiceException
+     * @throws StripeServiceException if amount is lower than 10
      */
     public Payment charge(@NonNull String creditCardNumber, @NonNull BigDecimal amount) throws StripeServiceException {
         ChargeRequest body = new ChargeRequest(creditCardNumber, amount);
@@ -61,11 +60,12 @@ public class StripeService {
      */
     public void refund(@NonNull String paymentId) throws StripeServiceException {
         // Object.class because we don't read the body here.
-        restTemplate.postForEntity(chargesUri.toString(), null, Object.class, paymentId);
+        restTemplate.postForEntity(refundsUri.toString(), null, Object.class, paymentId);
     }
 
     @AllArgsConstructor
-    private static class ChargeRequest {
+    @Getter
+    public static class ChargeRequest {
 
         @NonNull
         @JsonProperty("credit_card")
