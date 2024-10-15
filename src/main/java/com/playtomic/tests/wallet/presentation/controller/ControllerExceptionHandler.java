@@ -1,6 +1,7 @@
 package com.playtomic.tests.wallet.presentation.controller;
 
 import com.playtomic.tests.wallet.presentation.response.ErrorMessage;
+import com.playtomic.tests.wallet.service.stripe.StripeAmountTooSmallException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,5 +33,10 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorMessage> entityNotFoundException(EntityNotFoundException ex, WebRequest request) {
         return sendErrorMessage(HttpStatus.NOT_FOUND, ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(StripeAmountTooSmallException.class)
+    public ResponseEntity<ErrorMessage> stripeAmountTooSmallException(StripeAmountTooSmallException ex, WebRequest request) {
+        return sendErrorMessage(HttpStatus.BAD_REQUEST, "We only accept payments of 10 euros or greater", request);
     }
 }

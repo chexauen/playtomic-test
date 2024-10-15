@@ -19,7 +19,8 @@ public class WalletsService {
         return walletRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Resource not found: " + id));
     }
 
-    public Wallet createWallet(Wallet wallet) {
+    public Wallet saveWallet(Wallet wallet) {
         return walletRepository.save(wallet);
+
     }
 }
