@@ -1,4 +1,4 @@
-package com.playtomic.tests.wallet.service.impl;
+package com.playtomic.tests.wallet.service.stripe.impl;
 
 
 import com.playtomic.tests.wallet.service.stripe.StripeAmountTooSmallException;

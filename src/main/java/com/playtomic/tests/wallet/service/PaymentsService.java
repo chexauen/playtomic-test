@@ -1,4 +1,4 @@
 package com.playtomic.tests.wallet.service;
 
-public class WalletService {
+public class PaymentsService {
 }
