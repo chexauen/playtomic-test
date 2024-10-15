@@ -15,6 +15,9 @@ public class WalletsService {
     @Autowired
     private WalletRepository walletRepository;
 
+    public Wallet getWalletForUpdate(Long id){
+        return walletRepository.findById_(id).orElseThrow(() -> new EntityNotFoundException("Resource not found: " + id));
+    }
     public Wallet getWallet(Long id){
         return walletRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Resource not found: " + id));
     }

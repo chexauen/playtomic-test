@@ -4,6 +4,7 @@ import com.playtomic.tests.wallet.model.MoneyMovement;
 import com.playtomic.tests.wallet.model.Wallet;
 import com.playtomic.tests.wallet.presentation.request.TopupRequest;
 import com.playtomic.tests.wallet.service.stripe.StripeService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,20 +12,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class PaymentsService {
 
     @Autowired
-    WalletsService walletsService;
+    private final WalletsService walletsService;
 
     @Autowired
-    StripeService stripeService;
+    private final StripeService stripeService;
 
     @Autowired
-    MoneyMovementService moneyMovementService;
+    private final MoneyMovementService moneyMovementService;
 
     @Transactional
     public Wallet topupWallet(Long walletId, TopupRequest topupRequest) {
-        Wallet wallet = walletsService.getWallet(walletId);
+        Wallet wallet = walletsService.getWalletForUpdate(walletId);
         wallet.setBalance(wallet.getBalance().add(topupRequest.amount()));
         walletsService.saveWallet(wallet);
         MoneyMovement moneyMovement = MoneyMovement.builder().wallet(wallet).amount(topupRequest.amount()).build();
