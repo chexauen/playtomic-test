@@ -1,6 +1,11 @@
 spring.profiles.active: develop
 server:
   port: 8090
+springdoc:
+  packagesToScan: com.playtomic.tests.wallet.presentation.controller
+  packages-to-scan: com.playtomic.tests.wallet.presentation.controller
+  packages-to-exclude: com.playtomic.tests.wallet.**
+  packagesToExclude: com.playtomic.tests.wallet.**
 ---
 spring.config.activate.on-profile: develop
 spring:
