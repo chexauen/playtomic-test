@@ -4,11 +4,13 @@ import com.playtomic.tests.wallet.model.MoneyMovement;
 import com.playtomic.tests.wallet.model.Wallet;
 import com.playtomic.tests.wallet.presentation.request.TopupRequest;
 import com.playtomic.tests.wallet.service.stripe.StripeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
 public class PaymentsService {
 
     @Autowired
@@ -29,6 +31,7 @@ public class PaymentsService {
         moneyMovementService.saveMoneyMovement(moneyMovement);
         //most expensive action at the end, if it fails all previous changes would be rolled back
         stripeService.charge(topupRequest.cardNumber(), topupRequest.amount());
+        log.info("wallet with id: {} topped up by {}", walletId, topupRequest.amount());
         return wallet;
     }
 }

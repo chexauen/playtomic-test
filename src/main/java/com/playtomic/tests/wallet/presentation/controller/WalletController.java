@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class WalletController {
-    private final Logger log = LoggerFactory.getLogger(WalletController.class);
 
     @Autowired
     private WalletsService walletsService;
