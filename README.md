@@ -41,6 +41,13 @@ You don't need to write tests for everything, but we would like to see different
 - Springdoc (for swagger documentation generation) version 2.6
 - Flyway (for database migration) latest version
 
+### Endpoints
+There are 2 endpoints in the system
+
+`GET /wallets/{walletId}` to retrieve a wallet by its id
+
+and `POST /wallets/{walletId}/topup` to top up a wallet. It expects a json body with cardNumber and amount
+
 ### Endpoint documentation
 The service includes the springdoc library that scans the solution to provide readable documentation of the different endpoints.
 This documentation can be visited in http://localhost:8090/swagger-ui/index.html when the solution is running
@@ -49,9 +56,14 @@ This documentation can be visited in http://localhost:8090/swagger-ui/index.html
 Since it is stated that the solution would run along side other micro-services the jaeger library has been included and configured in this service.
 The configuration includes a filter and a custom implementation of restTemplate to make sure that the trace id is transmitted across all communications and included in all the logs.
 
+### Database migration
+For the service to be able to run tests or work normally, the database should contain the sql files in resources/db/migration should be executed.
+For doing so you can run this command in the terminal:
+`mvn flyway:migrate`
+
 ### Testing
 It has been included both unit testing (with service mocking) and integration testing to test the service's endpoints end to end
-You can run the tests from the IDE or executing mvn test
+You can run the tests from the IDE or executing `mvn test`
 
 ### Running
 When running the application it will listen in the port 8090.
