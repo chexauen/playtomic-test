@@ -1,4 +1,4 @@
-package com.playtomic.tests.wallet.service;
+package com.playtomic.tests.wallet.service.stripe;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -50,9 +49,9 @@ public class StripeService {
      *
      * @throws StripeServiceException if amount is lower than 10
      */
-    public Payment charge(@NonNull String creditCardNumber, @NonNull BigDecimal amount) throws StripeServiceException {
+    public StripePayment charge(@NonNull String creditCardNumber, @NonNull BigDecimal amount) throws StripeServiceException {
         ChargeRequest body = new ChargeRequest(creditCardNumber, amount);
-        return restTemplate.postForObject(chargesUri, body, Payment.class);
+        return restTemplate.postForObject(chargesUri, body, StripePayment.class);
     }
 
     /**

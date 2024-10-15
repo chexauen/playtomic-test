@@ -1,17 +1,14 @@
 package com.playtomic.tests.wallet.service.impl;
 
 
-import com.playtomic.tests.wallet.service.Payment;
-import com.playtomic.tests.wallet.service.StripeAmountTooSmallException;
-import com.playtomic.tests.wallet.service.StripeServiceException;
-import com.playtomic.tests.wallet.service.StripeService;
+import com.playtomic.tests.wallet.service.stripe.StripeAmountTooSmallException;
+import com.playtomic.tests.wallet.service.stripe.StripeServiceException;
+import com.playtomic.tests.wallet.service.stripe.StripeService;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
